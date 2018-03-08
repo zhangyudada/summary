@@ -1,0 +1,1 @@
+这是研一做LEO低轨卫星通信项目中部分算法的仿真，我所负责的为位置更新（location update）和寻呼（location paging）的流程设计以及仿真验证。

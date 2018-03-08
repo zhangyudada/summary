@@ -1,0 +1,78 @@
+<html>
+<head>
+	<title>张宇的个人网站</title>
+	<!--使用层叠样式表（CSS）来定义 HTML 元素的布局和显示属性-->
+	<!--课本之外标签-->
+	<style type="text/css">
+	h1 {color: DodgerBlue}	<!—标题h1字体颜色为DodgerBlue -->
+	</style>
+</head>
+
+<body background="./image/1.jpg">
+	<h1 align="center">欢迎访问我的个人网站</h1>
+	<h3>个人资料</h3>
+	<p>
+	<!--创建北京邮电大学的超链接-->
+	<!--如果把链接的 target 属性设置为 "_blank"，该链接会在新窗口中	打开-->
+大家好，我是来自<a href="http://www.bupt.edu.cn/" target="_blank">北京邮电大学</a>电子工程学院的张宇，在北邮呆了两年多，不知不觉已经大三了。这两年多交了很多好朋友，也学了很多知识，希望在接下来的大学时光里能够再接再厉。
+	</p>
+	<!--锚URL-->
+	你可以<a href="#login">登录</a>我的网站
+
+	<h3>爱好</h3>
+	<p>
+我主要有两个爱好：听歌，看动漫。最喜欢的动漫是<strong>夏目友人帐</strong>，不知道有没有同好的朋友。下面列举了一些我爱听的歌曲和爱看的动漫。
+	</p>
+	<!--自定义列表-->
+	<dl>
+		<dt>歌曲</dt>
+			<dd>月光—胡彦斌</dd>
+			<dd>山水之间—许嵩</dd>
+			<dd>七里香—周杰伦</dd>
+			<dd>幻化成风—つじあやの</dd>
+			<dd>......</dd>
+	<pre>	
+	这首歌是《幻化成风》
+	背景尤克里里的声音很好听，我很喜欢
+	</pre>
+	<!--插入音频-->
+	<embed src="幻化成风.mp3" width="600" height="100" autostart=0     loop=ture/>
+	<br/>
+	<br/>
+		<dt>动漫</dt>
+			<dd>夏目友人帐</dd>
+			<dd>虫师</dd>
+			<dd>秦时明月</dd>
+			<dd>龙猫</dd>
+			<dd>千与千寻</dd>
+			<dd>......</dd>
+	</dl>
+	<pre>
+	夏目友人帐照片墙
+	</pre>
+	<!--插入图片-->
+	<img src="./image/2.jpg" alt="夏目1" width="350" height="200"/>
+	<img src="./image/3.jpg" alt="夏目2" width="350" height="200"/>
+	<img src="./image/4.jpg" alt="夏目3" width="350" height="200"/>
+
+	<h3>联系我</h3>
+	<p>如果想要交个朋友的话，请给我
+	<!--邮件链接，点击打开UA，我的是微软的OUTLOOK-->
+	<!--这是另一个 mailto 链接, 使用 %20 来替换单词之间的空格-->
+	<a href="mailto:zhangyu1993@bupt.edu.cn?subject=Make%20friend">发邮件</a>。
+	</p>
+	
+	<!--锚点-->
+	<a id="login"><h3>登录</h3></a>
+	<p>你可以选择登录我的网站，加入我的网站</p>
+	<!--登录表单-->
+	<form>
+	用户：
+	<input type="text" name="user">
+	<br />
+	密码：
+	<input type="password" name="password">
+	<input type="submit" value="登录">
+	</form>	
+</body>
+</html>

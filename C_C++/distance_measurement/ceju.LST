@@ -1,0 +1,209 @@
+C51 COMPILER V7.06   CEJU                                                                  09/24/2015 13:08:59 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE CEJU
+OBJECT MODULE PLACED IN ceju.OBJ
+COMPILER INVOKED BY: D:\3others\Keil uVision2\Keil\C51\BIN\C51.EXE ceju.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          /********************************
+   2          实验名称 ； 超声波测距实验  
+   3          小组成员 ： 张宇    王晗丁  
+   4          时     间 ： 2015/9/14-2015/9/25
+   5          *********************************/
+   6          
+   7          #include <reg52.h>
+   8          #define uchar unsigned char
+   9          #define uint unsigned int
+  10          
+  11          sbit Trig = P3^2;               //启动超声波测距的引脚     
+  12          sbit Echo = P3^3;               //接收超声波回传信号的引脚      
+  13          sbit Qian = P3^4;               //数码管最高位选信号引脚     
+  14          sbit Bai = P3^5;                //数码管次高位选信号引脚     
+  15          sbit Shi = P3^6;                //数码管次低位选信号引脚     
+  16          sbit Ge = P3^7;                 //数码管最低位选信号引脚     
+  17          sbit S2 = P2^0;                 //校准开关引脚   
+  18          sbit S3 = P2^1;                 //加距离开关引脚    
+  19          sbit S4 = P2^2;                 //减距离开关引脚    
+  20          sbit Beep = P2^3;               //蜂鸣器控制引脚    
+  21          int succeed_flag;               //接收到超声波回传信号与否的标志      
+  22          int time;                               //回传信号持续时间    
+  23          float speed = 0.340;    //声速，单位mm/us   
+  24          uint STDDISTANCE = 1000;//校准用标准距离，1000mm   
+  25          uint distance;                  //存放测量好的距离    
+  26          uchar timeH;                    //16位定时器高8位数据    
+  27          uchar timeL;                    //16位定时器低8位数据    
+  28          uchar code Table[10] = {0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90};
+  29                                                          //4位共阳极数码管数字编码数组     
+  30          void delayms(uint z);   //延时z ms   
+  31          void delay_20us();              //延时20us  
+  32          void keyscan();                 //按键扫描  
+  33          void display();                 //数码管动态显示距离     
+  34          
+  35          //按下一次复位键，进行一次测距     
+  36          void main()
+  37          {
+  38   1              
+  39   1              TMOD = 0x01;            //定时器0，工作方式1，16位计数    
+  40   1              Trig = 0;               //首先拉低脉冲输入引脚    
+  41   1              EA = 0;                 //关总中断 
+  42   1              Trig = 1;               //超声波输入端送入高电平     
+  43   1              delay_20us();           //延时20us 
+  44   1              Trig = 0;               //产生一个20us的脉冲   
+  45   1              while(Echo == 0);       //等待Echo回波引脚变高电平     
+  46   1              succeed_flag = 0;       //清测量成功标志   
+  47   1              EA = 1;                         //开总中断  
+  48   1          IT1 = 1;                    //外部中断1触发方式为下降沿触发         
+  49   1              EX1 = 1;                //打开外部中断1     
+  50   1              TH0 = 0;                //定时器0清零  
+  51   1              TL0 = 0;                //定时器0清零  
+  52   1              TF0 = 0;                //计数溢出标志  
+  53   1              TR0 = 1;                //启动定时器0   
+  54   1              delayms(20);            //等待测量的结果  
+  55   1              TR0 = 0;                //关闭定时器0   
+C51 COMPILER V7.06   CEJU                                                                  09/24/2015 13:08:59 PAGE 2   
+
+  56   1              EX1 = 0;                //关闭外部中断1   
+  57   1              if(succeed_flag == 1)
+  58   1              {               
+  59   2                      time = timeH * 256 + timeL;
+  60   2                      distance = time/2*speed; //毫米  
+  61   2           }
+  62   1              if(succeed_flag == 0)
+  63   1              {            
+  64   2                      distance = 0;                   //没有回波则清零      
+  65   2              }
+  66   1              //循环检测按键并显示距离    
+  67   1              while(1)
+  68   1              {
+  69   2                      keyscan();
+  70   2                      if(distance < 500)
+  71   2                              Beep = 0;                       //距离小于500mm，则蜂鸣器报警    
+  72   2                      if(distance >= 500)
+  73   2                              Beep = 1;
+  74   2                      display();
+  75   2              }
+  76   1      }
+  77          
+  78          //外部中断1，用做判断回波电平      
+  79          void int1()  interrupt 2        //外部中断1中断号是2     
+  80          {        
+  81   1              EX1=0;                          //关闭外部中断   
+  82   1              timeH =TH0;                     //取出定时器的值    
+  83   1              timeL =TL0;                     //取出定时器的值   
+  84   1              succeed_flag=1;                 //至成功测量的标志    
+  85   1      }
+  86          
+  87          //定时器0中断,用做超声波测距计时      
+  88          void timer0() interrupt 1   //定时器0中断号是1    
+  89          {           
+  90   1              TH0=0;         
+  91   1              TL0=0;     
+  92   1      }
+  93          
+  94          //延时函数  
+  95          void delayms(uint z)
+  96          {   
+  97   1              uint x,y;    
+  98   1              for(x = z;x > 0;x--)   
+  99   1                      for(y = 110;y > 0;y--); 
+ 100   1      }
+ 101          
+ 102          //延时20us  
+ 103          void delay_20us()
+ 104          {       
+ 105   1              uchar a;      
+ 106   1              for(a = 0;a < 100;a++); 
+ 107   1      }
+ 108          
+ 109          //按键扫描   
+ 110          void keyscan()
+ 111          {
+ 112   1              //加距离，一次加10mm    
+ 113   1              if(S3 == 0)
+ 114   1              {
+ 115   2                      delayms(10);            //按键防抖   
+ 116   2                      if(S3 == 0)
+ 117   2                      {
+C51 COMPILER V7.06   CEJU                                                                  09/24/2015 13:08:59 PAGE 3   
+
+ 118   3                              distance += 20;
+ 119   3                              while(!S3);             //等待按键释放   
+ 120   3                      }
+ 121   2              }
+ 122   1              //减距离，一次减10mm   
+ 123   1              if(S4 == 0)
+ 124   1              {
+ 125   2                      delayms(10);
+ 126   2                      if(S4 == 0)
+ 127   2                      {
+ 128   3                              distance -= 20;
+ 129   3                              while(!S4);
+ 130   3                      }
+ 131   2              }
+ 132   1              //校准按键，测出实际声速   
+ 133   1              if(S2 == 0)
+ 134   1              {
+ 135   2                      delayms(10);
+ 136   2                      if(S2 == 0)
+ 137   2                      {
+ 138   3                              speed = 2 * STDDISTANCE / time;
+ 139   3                              while(!S2);
+ 140   3                      }
+ 141   2              }
+ 142   1      }
+ 143          
+ 144          //4位数码管显示测量距离    
+ 145          void display()
+ 146          {
+ 147   1              uint nTemp;
+ 148   1              uint nIndex;
+ 149   1              //显示个位，位选低电平有效    
+ 150   1              nTemp = distance;
+ 151   1              Ge = 0;
+ 152   1              nIndex = nTemp % 10;
+ 153   1              P1 = Table[nIndex];
+ 154   1              delayms(5);
+ 155   1              Ge = 1;
+ 156   1              //显示十位   
+ 157   1              nTemp /= 10;
+ 158   1              Shi = 0;
+ 159   1              nIndex = nTemp % 10;
+ 160   1              P1 = Table[nIndex];
+ 161   1              delayms(5);
+ 162   1              Shi = 1;
+ 163   1              //显示百位   
+ 164   1              nTemp /= 10;
+ 165   1              Bai = 0;
+ 166   1              nIndex = nTemp % 10;
+ 167   1              P1 = Table[nIndex];
+ 168   1              delayms(5);
+ 169   1              Bai = 1;
+ 170   1              //显示千位   
+ 171   1              nTemp /= 10; 
+ 172   1              Qian = 0;
+ 173   1              nIndex = nTemp % 10;
+ 174   1              P1 = Table[nIndex];
+ 175   1              delayms(5);
+ 176   1              Qian = 1;
+ 177   1      } 
+ 178          
+ 179          
+C51 COMPILER V7.06   CEJU                                                                  09/24/2015 13:08:59 PAGE 4   
+
+ 180          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    417    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     14    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

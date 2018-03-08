@@ -1,0 +1,3 @@
+CUE_Num=80，D2DUE_Num=50。
+性能优于1的布局
+在Rth=100Mbps时，Pout=0.5左右

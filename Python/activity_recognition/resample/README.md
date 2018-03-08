@@ -1,0 +1,1 @@
+Each segment of the accelerometer data represents a kind of activity, while different segment has different length which is not suitable for some alogrithms, so they are needed to be resampled to same length.

@@ -1,0 +1,7 @@
+CUE_Num=140£¬D2DUE_Num=110¡£
+
+R_th = 50*10^6;
+buffer = 0.1*2^20;                         
+D_th = buffer/R_th;
+Tx = 22;
+Rx = 88;

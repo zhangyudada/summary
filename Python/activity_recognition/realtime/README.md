@@ -1,0 +1,4 @@
+- A simple demo of a real time activity recogntion applacation. 
+- Raw hexadecimal triaxial accelerometer data are sent to PC via SOCKET.
+- While the data are received then decode the received hexadecimal triaxial accelerometer data to decimal data and draw the wave pattern.
+- Predict the decoded accelerometer data by a pre-trained machine learning model and show the predicted label of received data in one graph in real time.

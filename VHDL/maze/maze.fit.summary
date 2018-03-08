@@ -1,0 +1,11 @@
+Fitter Status : Successful - Sun Oct 26 21:58:44 2014
+Quartus II Version : 9.1 Build 222 10/21/2009 SJ Full Version
+Revision Name : maze
+Top-level Entity Name : maze
+Family : MAX II
+Device : EPM1270T144C5
+Timing Models : Final
+Total logic elements : 501 / 1,270 ( 39 % )
+Total pins : 45 / 116 ( 39 % )
+Total virtual pins : 0
+UFM blocks : 0 / 1 ( 0 % )

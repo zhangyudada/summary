@@ -1,0 +1,80 @@
+--abs_divider DEN_REPRESENTATION="SIGNED" LPM_PIPELINE=0 MAXIMIZE_SPEED=5 NUM_REPRESENTATION="SIGNED" SKIP_BITS=0 WIDTH_D=5 WIDTH_N=6 denominator numerator quotient remainder
+--VERSION_BEGIN 9.1 cbx_cycloneii 2009:10:21:21:22:16:SJ cbx_lpm_abs 2009:10:21:21:22:16:SJ cbx_lpm_add_sub 2009:10:21:21:22:16:SJ cbx_lpm_divide 2009:10:21:21:22:16:SJ cbx_mgl 2009:10:21:21:37:49:SJ cbx_stratix 2009:10:21:21:22:16:SJ cbx_stratixii 2009:10:21:21:22:16:SJ cbx_util_mgl 2009:10:21:21:22:16:SJ  VERSION_END
+
+
+-- Copyright (C) 1991-2009 Altera Corporation
+--  Your use of Altera Corporation's design tools, logic functions 
+--  and other software and tools, and its AMPP partner logic 
+--  functions, and any output files from any of the foregoing 
+--  (including device programming or simulation files), and any 
+--  associated documentation or information are expressly subject 
+--  to the terms and conditions of the Altera Program License 
+--  Subscription Agreement, Altera MegaCore Function License 
+--  Agreement, or other applicable license agreement, including, 
+--  without limitation, that your use is for the sole purpose of 
+--  programming logic devices manufactured by Altera and sold by 
+--  Altera or its authorized distributors.  Please refer to the 
+--  applicable agreement for further details.
+
+
+FUNCTION alt_u_div_fie (denominator[4..0], numerator[5..0])
+RETURNS ( quotient[5..0], remainder[4..0]);
+FUNCTION lpm_abs_9d9 (data[4..0])
+RETURNS ( overflow, result[4..0]);
+FUNCTION lpm_abs_ad9 (data[5..0])
+RETURNS ( overflow, result[5..0]);
+FUNCTION add_sub_ave (cin, dataa[5..0], datab[5..0])
+RETURNS ( result[5..0]);
+FUNCTION add_sub_9ve (cin, dataa[4..0], datab[4..0])
+RETURNS ( result[4..0]);
+
+--synthesis_resources = lut 42 
+SUBDESIGN abs_divider_5ag
+( 
+	denominator[4..0]	:	input;
+	numerator[5..0]	:	input;
+	quotient[5..0]	:	output;
+	remainder[4..0]	:	output;
+) 
+VARIABLE 
+	divider : alt_u_div_fie;
+	my_abs_den : lpm_abs_9d9;
+	my_abs_num : lpm_abs_ad9;
+	compl_add_quot : add_sub_ave;
+	compl_add_rem : add_sub_9ve;
+	diff_signs	: WIRE;
+	gnd_wire	: WIRE;
+	neg_quot[5..0]	: WIRE;
+	neg_rem[4..0]	: WIRE;
+	norm_den[4..0]	: WIRE;
+	norm_num[5..0]	: WIRE;
+	num_sign	: WIRE;
+	protect_quotient[5..0]	: WIRE;
+	protect_remainder[4..0]	: WIRE;
+	vcc_wire	: WIRE;
+
+BEGIN 
+	divider.denominator[] = norm_den[];
+	divider.numerator[] = norm_num[];
+	my_abs_den.data[] = denominator[];
+	my_abs_num.data[] = numerator[];
+	compl_add_quot.cin = vcc_wire;
+	compl_add_quot.dataa[] = (! protect_quotient[]);
+	compl_add_quot.datab[] = ( gnd_wire, gnd_wire, gnd_wire, gnd_wire, gnd_wire, gnd_wire);
+	compl_add_rem.cin = vcc_wire;
+	compl_add_rem.dataa[] = (! protect_remainder[]);
+	compl_add_rem.datab[] = ( gnd_wire, gnd_wire, gnd_wire, gnd_wire, gnd_wire);
+	diff_signs = (numerator[5..5] $ denominator[4..4]);
+	gnd_wire = B"0";
+	neg_quot[] = compl_add_quot.result[];
+	neg_rem[] = compl_add_rem.result[];
+	norm_den[] = my_abs_den.result[];
+	norm_num[] = my_abs_num.result[];
+	num_sign = numerator[5..5];
+	protect_quotient[] = divider.quotient[];
+	protect_remainder[] = divider.remainder[];
+	quotient[] = ((protect_quotient[] & (! diff_signs)) # (neg_quot[] & diff_signs));
+	remainder[] = ((protect_remainder[] & (! num_sign)) # (neg_rem[] & num_sign));
+	vcc_wire = B"1";
+END;
+--VALID FILE

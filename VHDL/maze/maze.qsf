@@ -1,0 +1,101 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 1991-2009 Altera Corporation
+# Your use of Altera Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Altera Program License 
+# Subscription Agreement, Altera MegaCore Function License 
+# Agreement, or other applicable license agreement, including, 
+# without limitation, that your use is for the sole purpose of 
+# programming logic devices manufactured by Altera and sold by 
+# Altera or its authorized distributors.  Please refer to the 
+# applicable agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus II
+# Version 9.1 Build 222 10/21/2009 SJ Full Version
+# Date created = 13:38:59  October 22, 2014
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		maze_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus II software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "MAX II"
+set_global_assignment -name DEVICE EPM1270T144C5
+set_global_assignment -name TOP_LEVEL_ENTITY maze
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 9.1
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "13:38:59  OCTOBER 22, 2014"
+set_global_assignment -name LAST_QUARTUS_VERSION 9.1
+set_global_assignment -name USE_GENERATED_PHYSICAL_CONSTRAINTS OFF -section_id eda_blast_fpga
+set_global_assignment -name DEVICE_FILTER_PACKAGE TQFP
+set_global_assignment -name DEVICE_FILTER_PIN_COUNT 144
+set_global_assignment -name DEVICE_FILTER_SPEED_GRADE 5
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name POWER_EXT_SUPPLY_VOLTAGE_TO_REGULATOR 3.3V
+set_global_assignment -name VHDL_FILE maze.vhd
+set_global_assignment -name LL_ROOT_REGION ON -section_id "Root Region"
+set_global_assignment -name LL_MEMBER_STATE LOCKED -section_id "Root Region"
+set_global_assignment -name MISC_FILE "E:/数字电路与逻辑分析实验（下）/shudian/maze/maze.dpf"
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
+set_location_assignment PIN_1 -to ashow[23]
+set_location_assignment PIN_2 -to ashow[22]
+set_location_assignment PIN_3 -to ashow[21]
+set_location_assignment PIN_4 -to ashow[20]
+set_location_assignment PIN_5 -to ashow[19]
+set_location_assignment PIN_6 -to ashow[18]
+set_location_assignment PIN_7 -to ashow[17]
+set_location_assignment PIN_8 -to ashow[16]
+set_location_assignment PIN_22 -to ashow[15]
+set_location_assignment PIN_21 -to ashow[14]
+set_location_assignment PIN_16 -to ashow[13]
+set_location_assignment PIN_15 -to ashow[12]
+set_location_assignment PIN_14 -to ashow[11]
+set_location_assignment PIN_13 -to ashow[10]
+set_location_assignment PIN_12 -to ashow[9]
+set_location_assignment PIN_11 -to ashow[8]
+set_location_assignment PIN_45 -to ashow[7]
+set_location_assignment PIN_44 -to ashow[6]
+set_location_assignment PIN_43 -to ashow[5]
+set_location_assignment PIN_42 -to ashow[4]
+set_location_assignment PIN_41 -to ashow[3]
+set_location_assignment PIN_40 -to ashow[2]
+set_location_assignment PIN_39 -to ashow[1]
+set_location_assignment PIN_38 -to ashow[0]
+set_location_assignment PIN_18 -to clk
+set_location_assignment PIN_89 -to d
+set_location_assignment PIN_91 -to l
+set_location_assignment PIN_62 -to nshow[7]
+set_location_assignment PIN_59 -to nshow[6]
+set_location_assignment PIN_58 -to nshow[5]
+set_location_assignment PIN_57 -to nshow[4]
+set_location_assignment PIN_55 -to nshow[3]
+set_location_assignment PIN_53 -to nshow[2]
+set_location_assignment PIN_52 -to nshow[1]
+set_location_assignment PIN_51 -to nshow[0]
+set_location_assignment PIN_70 -to nstate[5]
+set_location_assignment PIN_69 -to nstate[4]
+set_location_assignment PIN_68 -to nstate[3]
+set_location_assignment PIN_67 -to nstate[2]
+set_location_assignment PIN_66 -to nstate[1]
+set_location_assignment PIN_63 -to nstate[0]
+set_location_assignment PIN_61 -to r
+set_location_assignment PIN_123 -to reset
+set_location_assignment PIN_124 -to start
+set_location_assignment PIN_20 -to u

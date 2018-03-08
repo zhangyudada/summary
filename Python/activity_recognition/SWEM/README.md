@@ -1,0 +1,2 @@
+This part is a computer reproduction of the algorithm mentioned in a paper[1].  
+[1] Zheng Y, Wong W K, Guan X, et al. Physical Activity Recognition from Accelerometer Data Using a Multi-Scale Ensemble Method[C]//IAAI. 2013.

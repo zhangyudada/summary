@@ -1,0 +1,1 @@
+A CNN solution to the activity recognition problem.
